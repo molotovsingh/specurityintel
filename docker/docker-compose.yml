@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  uam-compliance:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: uam-compliance-poc
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      SLACK_BOT_TOKEN: ${SLACK_BOT_TOKEN}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USERNAME: ${SMTP_USERNAME}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      STORAGE_TYPE: ${STORAGE_TYPE:-jsonl}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    volumes:
+      - ../data:/app/data
+      - ../logs:/app/logs
+      - ../config:/app/config
+    ports:
+      - "5000:5000"
+    networks:
+      - uam-network
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: uam-postgres
+    environment:
+      POSTGRES_DB: uam_compliance
+      POSTGRES_USER: ${DB_USER:-uam_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-uam_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - uam-network
+    profiles:
+      - postgres
+
+networks:
+  uam-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

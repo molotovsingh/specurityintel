@@ -1,0 +1,32 @@
+# Notification Settings Configuration
+
+slack:
+  enabled: true
+  channels:
+    critical: "#security-critical"
+    high: "#security-critical"
+    medium: "#compliance-alerts"
+    low: "#compliance-alerts"
+
+email:
+  enabled: true
+  recipients:
+    compliance_officer:
+      - compliance@example.com
+      - security-lead@example.com
+    app_owner:
+      - "{app_owner_email}"  # Placeholder for app owner email
+
+ai_settings:
+  model: "gpt-4-turbo"
+  max_tokens:
+    gpt-4: 8000
+    gpt-4-turbo: 128000
+  temperature: 0.7
+  timeout_seconds: 30
+  cost_limit_per_day: 50.0
+
+logging:
+  level: "INFO"
+  format: "json"
+  output: "both"  # console and file
