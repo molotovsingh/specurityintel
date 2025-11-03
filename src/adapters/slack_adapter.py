@@ -40,7 +40,7 @@ class SlackAdapter(SlackSender):
 
         while retries < max_retries:
             try:
-                response = self.client.chat_postMessage(
+                self.client.chat_postMessage(
                     channel=channel,
                     text=self._format_message(alert)
                 )

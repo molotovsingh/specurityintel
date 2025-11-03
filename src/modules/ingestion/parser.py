@@ -6,7 +6,6 @@ import pandas as pd
 from pathlib import Path
 from typing import Tuple
 from ...interfaces.errors import ValidationError, ProcessingError
-from ...interfaces.ports import Clock
 
 
 class CSVParser:

@@ -7,9 +7,8 @@ Validates Pydantic model validation and serialization.
 import pytest
 from datetime import datetime
 from src.interfaces.dto import (
-    Severity, KPIRecord, RiskAnalysisResult, Violation, Alert, AuditEvent
+    Severity, KPIRecord, RiskAnalysisResult, Violation, Alert
 )
-from src.interfaces.errors import ValidationError
 
 
 class TestSeverity:

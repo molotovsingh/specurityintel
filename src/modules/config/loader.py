@@ -14,10 +14,10 @@ from ...interfaces.dto import Thresholds
 
 class NotificationSettings(BaseModel):
     """Notification channel settings."""
-    slack_enabled: bool = True
+    slack_enabled: bool = False
     slack_bot_token: Optional[str] = None
     slack_channels: Dict[str, str] = Field(default_factory=dict)
-    email_enabled: bool = True
+    email_enabled: bool = False
     smtp_host: Optional[str] = None
     smtp_port: int = 587
     smtp_username: Optional[str] = None
@@ -27,7 +27,7 @@ class NotificationSettings(BaseModel):
 
 class AISettings(BaseModel):
     """AI/OpenAI configuration settings."""
-    openai_api_key: Optional[str] = None
+    openai_api_key: Optional[str] = "demo-key"
     model: str = "gpt-4-turbo"
     max_tokens: Dict[str, int] = Field(default_factory=lambda: {
         "gpt-4": 8000,

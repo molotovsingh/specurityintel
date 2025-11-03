@@ -150,3 +150,4 @@ See Section 14.2 of UAM-Compliance-PRD-V2.md for the complete alert template.
 - Implement retry logic for all external integrations
 - Use flexible CSV parsing to handle schema evolution
 - Log all threshold triggers for post-POC tuning
+- remote is https://github.com/molotovsingh/specurityintel.git

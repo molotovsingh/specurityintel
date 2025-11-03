@@ -4,7 +4,6 @@ Alert Generator Module.
 
 from uuid import uuid4
 from typing import List
-from datetime import datetime
 from ...interfaces.dto import Alert, Violation, Severity
 from ...interfaces.ports import Storage, SlackSender, EmailSender, Clock
 from ...interfaces.errors import ProcessingError

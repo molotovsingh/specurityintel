@@ -5,7 +5,7 @@ AI analysis using OpenAI API via LangChain.
 """
 
 from langchain_openai import ChatOpenAI
-from langchain.schema import HumanMessage
+from langchain_core.messages import HumanMessage
 from ..interfaces.ports import OpenAIClient
 from ..interfaces.errors import IntegrationError
 

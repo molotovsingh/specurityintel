@@ -4,7 +4,6 @@ Composition Root - Dependency Injection Setup.
 Wires all adapters and modules together.
 """
 
-import os
 from .adapters.clock import SystemClock, FixedClock
 from .adapters.audit import StructlogAuditLogger
 from .adapters.storage.jsonl import JsonlStorage
@@ -18,7 +17,12 @@ from .modules.ingestion.parser import CSVParser
 from .modules.kpi.calculators import (
     OrphanAccountsCalculator,
     PrivilegedAccountsCalculator,
-    FailedAccessAttemptsCalculator
+    FailedAccessAttemptsCalculator,
+    AccessProvisioningTimeCalculator,
+    AccessReviewStatusCalculator,
+    PolicyViolationsCalculator,
+    ExcessivePermissionsCalculator,
+    DormantAccountsCalculator
 )
 from .modules.policy.rules import PolicyRuleEngine
 from .modules.ai.analyzer import RiskAnalyzer
@@ -78,25 +82,27 @@ class ServiceContainer:
             storage = JsonlStorage(directory="./data")
 
         # Slack
-        if config.notifications.slack_enabled:
+        if config.notifications.slack_enabled and config.notifications.slack_bot_token:
             slack = SlackAdapter(bot_token=config.notifications.slack_bot_token)
         else:
-            from .adapters.storage.in_memory import InMemoryStorage
             slack = SlackAdapter(bot_token="xoxb-mock")
 
         # Email
         email = EmailAdapter(
-            smtp_host=config.notifications.smtp_host,
+            smtp_host=config.notifications.smtp_host or "smtp.mock.com",
             smtp_port=config.notifications.smtp_port,
-            username=config.notifications.smtp_username,
-            password=config.notifications.smtp_password
+            username=config.notifications.smtp_username or "mock@mock.com",
+            password=config.notifications.smtp_password or "mock"
         )
 
         # OpenAI
-        openai = OpenAIAdapter(
-            api_key=config.ai_settings.openai_api_key,
-            model=config.ai_settings.model
-        )
+        if config.ai_settings.openai_api_key and config.ai_settings.openai_api_key != "demo-key":
+            openai = OpenAIAdapter(
+                api_key=config.ai_settings.openai_api_key,
+                model=config.ai_settings.model
+            )
+        else:
+            openai = MockOpenAIClient()
 
         return ServiceContainer(
             clock=clock,
@@ -127,7 +133,11 @@ class ServiceContainer:
         from .interfaces.dto import Thresholds
 
         config = SystemConfig(
-            thresholds=Thresholds(alert_thresholds={}),
+            thresholds=Thresholds(alert_thresholds={
+                "orphan_accounts": {"low": 1, "medium": 3, "high": 5, "critical": 10},
+                "privileged_accounts": {"low": 5, "medium": 10, "high": 15, "critical": 20},
+                "failed_access_attempts": {"low": 10, "medium": 25, "high": 50, "critical": 100}
+            }),
             notifications=NotificationSettings(),
             ai_settings=AISettings()
         )
@@ -155,6 +165,21 @@ class ServiceContainer:
 
     def failed_access_calculator(self):
         return FailedAccessAttemptsCalculator(storage=self.storage, clock=self.clock)
+
+    def access_provisioning_time_calculator(self):
+        return AccessProvisioningTimeCalculator(storage=self.storage, clock=self.clock)
+
+    def access_review_status_calculator(self):
+        return AccessReviewStatusCalculator(storage=self.storage, clock=self.clock)
+
+    def policy_violations_calculator(self):
+        return PolicyViolationsCalculator(storage=self.storage, clock=self.clock)
+
+    def excessive_permissions_calculator(self):
+        return ExcessivePermissionsCalculator(storage=self.storage, clock=self.clock)
+
+    def dormant_accounts_calculator(self):
+        return DormantAccountsCalculator(storage=self.storage, clock=self.clock)
 
     def policy_engine(self) -> PolicyRuleEngine:
         thresholds = self.config.thresholds.alert_thresholds

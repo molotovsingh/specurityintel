@@ -2,7 +2,6 @@
 Policy Rule Engine for violation detection.
 """
 
-import pandas as pd
 from uuid import uuid4
 from typing import List
 from ...interfaces.dto import Violation, Severity

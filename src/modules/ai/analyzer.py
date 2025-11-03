@@ -2,8 +2,7 @@
 AI Risk Analysis Module using OpenAI.
 """
 
-from uuid import uuid4
-from ...interfaces.dto import RiskAnalysisResult, Severity
+from ...interfaces.dto import RiskAnalysisResult
 from ...interfaces.ports import OpenAIClient, Clock
 from ...interfaces.errors import ProcessingError
 

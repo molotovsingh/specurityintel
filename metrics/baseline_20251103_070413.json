@@ -1,0 +1,44 @@
+{
+  "collection_timestamp": "2025-11-03T07:04:12.111178",
+  "scenarios": [
+    {
+      "name": "Small",
+      "apps": 10,
+      "users_per_app": 100,
+      "total_records": 1000,
+      "processing_time_seconds": 0.01,
+      "records_per_second": 94590.0,
+      "apps_per_second": 945.9,
+      "total_violations": 0,
+      "total_alerts": 0,
+      "violation_rate_percent": 0.0,
+      "alerts_per_violation": 0
+    },
+    {
+      "name": "Medium",
+      "apps": 50,
+      "users_per_app": 500,
+      "total_records": 25000,
+      "processing_time_seconds": 0.07,
+      "records_per_second": 360776.0,
+      "apps_per_second": 721.6,
+      "total_violations": 0,
+      "total_alerts": 0,
+      "violation_rate_percent": 0.0,
+      "alerts_per_violation": 0
+    },
+    {
+      "name": "Large",
+      "apps": 100,
+      "users_per_app": 1000,
+      "total_records": 100000,
+      "processing_time_seconds": 0.4,
+      "records_per_second": 248852.0,
+      "apps_per_second": 248.9,
+      "total_violations": 0,
+      "total_alerts": 0,
+      "violation_rate_percent": 0.0,
+      "alerts_per_violation": 0
+    }
+  ]
+}

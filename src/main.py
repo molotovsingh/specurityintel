@@ -10,7 +10,6 @@ Runs daily processing pipeline:
 """
 
 import sys
-import logging
 from pathlib import Path
 from .composition_root import ServiceContainer
 
@@ -24,7 +23,6 @@ def main():
         # Get pipeline components
         csv_parser = container.csv_parser()
         policy_engine = container.policy_engine()
-        risk_analyzer = container.risk_analyzer()
         alert_gen = container.alert_generator()
 
         # Parse input CSV
@@ -69,7 +67,7 @@ def main():
             except Exception as e:
                 print(f"Policy evaluation failed for {app_id}: {e}")
 
-        print(f"\nProcessing complete:")
+        print("\nProcessing complete:")
         print(f"  Violations detected: {total_violations}")
         print(f"  Alerts sent: {total_alerts}")
 
